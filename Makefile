@@ -6,7 +6,7 @@ install: link-scripts set-lesskey
 set-lesskey: clean-lesskey
 	mkdir build
 
-	lesskey -o $(OUTPUT_PATH) -- ./.lesskey-git-log
+	lesskey -o $(OUTPUT_PATH) -- ./git-log.lesskey
 
 	git config --global pager.log "less --lesskey-file=$(OUTPUT_PATH) --chop-long-lines --ignore-case --LONG-PROMPT --LINE-NUMBERS --RAW-CONTROL-CHARS --status-column --tilde"
 .PHONY: set-lesskey
