@@ -1,11 +1,14 @@
 #command
 
-# This command is mainly for testing purposes. It
-# allows passing in arbitrary commands to the 
-# less-git-tools script.
-c   pipe . less-git-tools 
+# Simpler movement on short logs
+j   forw-line-force
 
-# These commands will invoke immediately on the 
+# This command is mainly for testing purposes. It
+# allows passing in arbitrary commands to the
+# less-git-tools script.
+c   pipe . less-git-tools
+
+# These commands will invoke immediately on the
 # commit on the top line
 \   pipe . less-git-tools show \r
 i   pipe . less-git-tools issue \r
@@ -17,18 +20,18 @@ y   pipe . less-git-tools yank \r
 # is given, they will act on a range of commits.
 # Otherwise, they'll just act on the commit on the
 # top line.
-d   pipe . less-git-tools diff 
-l   pipe . less-git-tools files 
-m   pipe . less-git-tools modules 
-o   pipe . less-git-tools open 
-t   pipe . less-git-tools difftool 
+d   pipe . less-git-tools diff
+l   pipe . less-git-tools files
+m   pipe . less-git-tools modules
+o   pipe . less-git-tools open
+t   pipe . less-git-tools difftool
 
 # These commands will change the git log, so they
 # use capital letters to prevent accidental execution.
-C   pipe . less-git-tools cherry-pick 
+C   pipe . less-git-tools cherry-pick
 F   pipe . less-git-tools fixup \r
 I   pipe . less-git-tools rebase \r
-P   pipe . less-git-tools format-patch 
+P   pipe . less-git-tools format-patch
 
 
 #line-edit
