@@ -6,7 +6,7 @@ install: link-scripts set-lesskey
 set-lesskey: clean-lesskey
 	mkdir build
 
-	lesskey -o $(OUTPUT_PATH) -- ./git-log.lesskey
+	lesskey -o $(OUTPUT_PATH) -- ./src/git-log.lesskey
 
 	git config --global pager.log "less --lesskey-file=$(OUTPUT_PATH) --chop-long-lines --ignore-case --LONG-PROMPT --LINE-NUMBERS --RAW-CONTROL-CHARS --status-column --tilde"
 .PHONY: set-lesskey
@@ -18,10 +18,10 @@ clean-lesskey:
 .PHONY: clean
 
 link-scripts: clean-scripts
-	ln -s $(shell pwd)/git-log-tools.sh /usr/local/bin/git-log-tools
+	ln -s $(shell pwd)/src/git-log-tools.sh /usr/local/bin/git-log-tools
 	chmod -h 755 /usr/local/bin/git-log-tools
 
-	ln -s $(shell pwd)/less-git-tools.sh /usr/local/bin/less-git-tools
+	ln -s $(shell pwd)/src/less-git-tools.sh /usr/local/bin/less-git-tools
 	chmod -h 755 /usr/local/bin/less-git-tools
 .PHONY: link-scripts
 
