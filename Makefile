@@ -15,7 +15,7 @@ clean-lesskey:
 	rm -rf ./build
 
 	git config --global --unset pager.log || :
-.PHONY: clean
+.PHONY: clean-lesskey
 
 link-scripts: clean-scripts
 	ln -s $(shell pwd)/src/git-log-tools.sh /usr/local/bin/git-log-tools
