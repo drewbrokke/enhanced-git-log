@@ -18,10 +18,10 @@ clean-lesskey:
 .PHONY: clean
 
 link-scripts: clean-scripts
-	ln -s $(shell pwd)/git-log-tools /usr/local/bin/git-log-tools
+	ln -s $(shell pwd)/git-log-tools.sh /usr/local/bin/git-log-tools
 	chmod -h 755 /usr/local/bin/git-log-tools
 
-	ln -s $(shell pwd)/less-git-tools /usr/local/bin/less-git-tools
+	ln -s $(shell pwd)/less-git-tools.sh /usr/local/bin/less-git-tools
 	chmod -h 755 /usr/local/bin/less-git-tools
 .PHONY: link-scripts
 
