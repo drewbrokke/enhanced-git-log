@@ -31,6 +31,7 @@ t   pipe . less-git-tools difftool  \b
 C   pipe . less-git-tools cherry-pick  \b
 F   pipe . less-git-tools fixup \r
 I   pipe . less-git-tools rebase \r
+R   pipe . less-git-tools revert  \b
 P   pipe . less-git-tools format-patch  \b
 
 
