@@ -64,7 +64,7 @@ then
 
 elif [ "${COMMAND}" = "open" ]
 then
-	for file in $(git diff "$(getRange)" --name-only | head -n 100)
+	for file in $(git diff "$(getRange)" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")
 	do
 		open "$file" 2>/dev/null || echo "Could not open file: $file"
 	done
