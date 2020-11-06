@@ -9,30 +9,36 @@ j   forw-line-force
 c   pipe . less-git-tools  \b
 
 # These commands will invoke immediately on the
-# commit on the top line
+# commit on the top line.
 \   pipe . less-git-tools show \r
+d   pipe . less-git-tools diff \r
 i   pipe . less-git-tools issue \r
+l   pipe . less-git-tools files \r
+m   pipe . less-git-tools modules \r
+o   pipe . less-git-tools open \r
 p   pipe . less-git-tools pull-request \r
+t   pipe . less-git-tools difftool \r
 x   pipe . less-git-tools yank \r
 y   pipe . less-git-tools yank \r
 
-# These commands wait for input. If a commit hash
-# is given, they will act on a range of commits.
-# Otherwise, they'll just act on the commit on the
-# top line.
-d   pipe . less-git-tools diff  \b
-l   pipe . less-git-tools files  \b
-m   pipe . less-git-tools modules  \b
-o   pipe . less-git-tools open  \b
-t   pipe . less-git-tools difftool  \b
-
-# These commands will change the git log, so they
-# use capital letters to prevent accidental execution.
-C   pipe . less-git-tools cherry-pick  \b
+C   pipe . less-git-tools cherry-pick \r
 F   pipe . less-git-tools fixup \r
 I   pipe . less-git-tools rebase \r
-R   pipe . less-git-tools revert  \b
-P   pipe . less-git-tools format-patch  \b
+P   pipe . less-git-tools format-patch \r
+R   pipe . less-git-tools revert \r
+
+# These commands will invoke immediately and pass in the clipboard contents as
+# an argument. This is designed to be used in conjunction with the 'yank'
+# commands above to perform commands on a range of commits.
+\td   pipe . less-git-tools diff "$(pbpaste)" \r
+\tl   pipe . less-git-tools files "$(pbpaste)" \r
+\tm   pipe . less-git-tools modules "$(pbpaste)" \r
+\to   pipe . less-git-tools open "$(pbpaste)" \r
+\tt   pipe . less-git-tools difftool "$(pbpaste)" \r
+
+\tC   pipe . less-git-tools cherry-pick "$(pbpaste)" \r
+\tP   pipe . less-git-tools format-patch "$(pbpaste)" \r
+\tR   pipe . less-git-tools revert "$(pbpaste)" \r
 
 
 #line-edit
