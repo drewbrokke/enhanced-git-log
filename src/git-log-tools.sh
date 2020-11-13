@@ -4,6 +4,26 @@ COMMAND="${1:?Command required}"
 COMMIT="${2:?Commit hash required}"
 ALT_COMMIT="${3}"
 
+function _writeToLog() {
+	if [ -f "${GIT_LOG_TOOLS_LOG_FILE}" ]
+	then
+		echo "$1" >> "${GIT_LOG_TOOLS_LOG_FILE}"
+	fi
+}
+
+function _log() {
+	_writeToLog "[LOG] [$(date +"%D %r")] $1"
+}
+
+function _warn() {
+	_writeToLog "[WARN] [$(date +"%D %r")] $1"
+}
+
+function _logAndExecute() {
+	_log "Executing command: $*"
+	"$@"
+}
+
 # Given two git commit hashes, this function will output in range format, with the
 # ancestor commit coming first. If only one commit is given, then use a
 # "single commit range"
@@ -34,19 +54,19 @@ then
 
 elif [ "${COMMAND}" = "cherry-pick" ]
 then
-	git cherry-pick "$(getRange)" || git cherry-pick --abort
+	_logAndExecute git cherry-pick "$(getRange)" || git cherry-pick --abort && _warn "Cherry-pick aborted"
 
 elif [ "${COMMAND}" = "diff" ]
 then
-	git diff "$(getRange)" --patch --stat-width=1000 --ignore-all-space
+	_logAndExecute git diff "$(getRange)" --patch --stat-width=1000 --ignore-all-space
 
 elif [ "${COMMAND}" = "difftool" ]
 then
-	git difftool "$(getRange)"
+	_logAndExecute git difftool "$(getRange)"
 
 elif [ "${COMMAND}" = "files" ]
 then
-	git diff "$(getRange)" --name-only | less
+	_logAndExecute git --paginate diff "$(getRange)" --name-only
 
 elif [ "${COMMAND}" = "format-patch" ]
 then
@@ -56,14 +76,15 @@ then
 
 		exit 1
 	fi
-	git format-patch -o "${GIT_LOG_TOOLS_PTACH_DIR}" "$(getRange)"
+	_logAndExecute git format-patch -o "${GIT_LOG_TOOLS_PTACH_DIR}" "$(getRange)"
 
 elif [ "${COMMAND}" = "fixup" ]
 then
-	git commit --fixup="${COMMIT}"
+	_logAndExecute git commit --fixup="${COMMIT}"
 
 elif [ "${COMMAND}" = "open" ]
 then
+	_log "Opening files with command: $(git diff "$(getRange)" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")"
 	for file in $(git diff "$(getRange)" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")
 	do
 		open "$file" 2>/dev/null || echo "Could not open file: $file"
@@ -71,18 +92,20 @@ then
 
 elif [ "${COMMAND}" = "rebase" ]
 then
-	git rebase --autosquash --interactive "${COMMIT}^" || git rebase --abort
+	_logAndExecute git rebase --autosquash --interactive "${COMMIT}^" || git rebase --abort && _warn "Rebase aborted"
 
 elif [ "${COMMAND}" = "revert" ]
 then
-	git revert "$(getRange)"
+	_logAndExecute git revert "$(getRange)"
 
 elif [ "${COMMAND}" = "show" ]
 then
-	git show --color=always "${COMMIT}"
+	_logAndExecute git show --color=always "${COMMIT}"
 
 elif [ "${COMMAND}" = "yank" ]
 then
+	_log "Executing command: printf \"%s\" \"${COMMIT}\" | pbcopy"
+
 	printf "%s" "${COMMIT}" | pbcopy
 
 
@@ -92,7 +115,7 @@ then
 
 elif [ "${COMMAND}" = "issue" ] && command -v ji 2>/dev/null
 then
-	ji "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
+	_logAndExecute ji "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
 
 elif [ "${COMMAND}" = "modules" ] && [ -f "$HOME/Documents/sed_commands/show_modules.txt" ]
 then
@@ -103,7 +126,7 @@ then
 
 elif [ "${COMMAND}" = "pull-request" ] && command -v getpr 2>/dev/null
 then
-	getpr "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
+	_logAndExecute getpr "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
 
 ###
 ### END		These depend on my personal scripts
