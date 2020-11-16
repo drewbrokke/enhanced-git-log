@@ -27,30 +27,33 @@ make uninstall
 
 All key commands act on the commit found at the top line of the `git log` pager, or the first line from the top that contains a commit hash.
 
-Commands that **do not** accept a second commit are executed immediately.
+`tab-*` commands will receive a second commit to create and act on a commit range. The **contents of the clipboard** will be passed in as the second commit. The two commits are automatically sorted by ancestry, parent first.
 
-Commands that **do** accept a second commit will prompt for it, and can be executed by pressing the `return` key.
+For example, pressing `d` will execute: `git diff {commit from top line}`
 
-If a command accepts a second commit, it is *always* optional.
-
-If a second commit is given to a command, the command will instead act on a range of commits in the commit range format: `{parent}^..{child}`.
-
-For example, pressing `d` then `return` will execute: `git diff {commit from top line}`
-
-Pressing `d`, then pasting in commit hash, then `return` will execute: `git diff {parent}^..{child}`.
+Pressing `tab-d` will execute: `git diff {parent}^..{child}`.
 
 ### Key Commands
 
-| Key | Command | Accepts Second Commit? |
-| ----- | ----- | ----- |
-| `spacebar` | `git show {commit}` | no |
-| `x` or `y` | Copy current commit hash to the clipboard (*macOS only*) | no |
-| `d` | `git diff {commit}` | yes |
-| `l` | List files changed in commit | yes |
-| `o` | Open files changed in commit | yes |
-| `t` | `git difftool {commit}` | yes |
-| `C` | `git cherry-pick {commit}` | yes |
-| `F` | `git commit --fixup={commit}` | no |
-| `I` | `git rebase --autosquash --interactive {commit}^` | no |
-| `R` | `git revert {commit}` | yes |
-| `P` | `git format-patch {commit}` | yes |
+All tab commands receive the top-line commit as the first argument, and the clipboard contents as the second argument.
+
+| Key | Command |
+| ----- | ----- |
+| `spacebar` | `git show {commit}` |
+| `x` or `y` | Copy current commit hash to the clipboard |
+| `C` | `git cherry-pick {commit}` |
+| `d` | `git diff {commit}` |
+| `F` | `git commit --fixup={commit}` |
+| `I` | `git rebase --autosquash --interactive {commit}^` |
+| `l` | List files changed in commit |
+| `o` | Open files changed in commit |
+| `P` | `git format-patch {commit}` |
+| `R` | `git revert {commit}` |
+| `t` | `git difftool {commit}` |
+| `tab-C` | `git cherry-pick {parent}..{child}` |
+| `tab-d` | `git diff {parent}..{child}` |
+| `tab-l` | List files changed in commit range |
+| `tab-o` | Open files changed in commit range |
+| `tab-P` | `git format-patch {parent}..{child}` |
+| `tab-R` | `git revert {parent}..{child}` |
+| `tab-t` | `git difftool {parent}..{child}` |
