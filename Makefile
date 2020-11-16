@@ -20,7 +20,7 @@ set-lesskey: clean-lesskey
 clean-lesskey:
 	rm -rf ./build
 
-	git config --global --unset pager.log || :
+	git config --global --unset pager.log 2>/dev/null || :
 .PHONY: clean-lesskey
 
 link-scripts: clean-scripts
@@ -32,8 +32,8 @@ link-scripts: clean-scripts
 .PHONY: link-scripts
 
 clean-scripts:
-	rm /usr/local/bin/git-log-tools || :
-	rm /usr/local/bin/less-git-tools || :
+	rm /usr/local/bin/git-log-tools 2>/dev/null || :
+	rm /usr/local/bin/less-git-tools 2>/dev/null || :
 .PHONY: clean-scripts
 
 clean: clean-scripts clean-lesskey
