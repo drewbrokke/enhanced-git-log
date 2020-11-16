@@ -104,9 +104,16 @@ then
 
 elif [ "${COMMAND}" = "yank" ]
 then
-	_log "Executing command: printf \"%s\" \"${COMMIT}\" | pbcopy"
+	if command -v pbcopy 1>/dev/null
+	then
+		_log "Executing command: printf \"%s\" \"${COMMIT}\" | pbcopy"
 
-	printf "%s" "${COMMIT}" | pbcopy
+		printf "%s" "${COMMIT}" | pbcopy
+	else
+		_log "Executing command: printf \"%s\" \"${COMMIT}\" | xsel -i"
+
+		printf "%s" "${COMMIT}" | xsel -i
+	fi
 
 
 ###

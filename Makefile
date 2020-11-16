@@ -1,12 +1,18 @@
 OUTPUT_PATH=$(shell pwd)/build/.less-git-log
 
+ifeq ($(shell uname), Darwin)
+	PASTE_COMMAND=pbpaste
+else
+	PASTE_COMMAND=xsel -o
+endif
+
 install: link-scripts set-lesskey
 .PHONY: install
 
 set-lesskey: clean-lesskey
 	mkdir build
 
-	lesskey -o $(OUTPUT_PATH) -- ./src/git-log.lesskey
+	sed 's/{{PASTE_COMMAND}}/$(PASTE_COMMAND)/g' ./src/git-log.lesskey | lesskey -o $(OUTPUT_PATH) -
 
 	git config --global pager.log "less --lesskey-file=$(OUTPUT_PATH) --chop-long-lines --ignore-case --LONG-PROMPT --LINE-NUMBERS --RAW-CONTROL-CHARS --status-column --tilde"
 .PHONY: set-lesskey

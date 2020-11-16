@@ -30,15 +30,15 @@ R   pipe . less-git-tools revert \r
 # These commands will invoke immediately and pass in the clipboard contents as
 # an argument. This is designed to be used in conjunction with the 'yank'
 # commands above to perform commands on a range of commits.
-\td   pipe . less-git-tools diff "$(pbpaste)" \r
-\tl   pipe . less-git-tools files "$(pbpaste)" \r
-\tm   pipe . less-git-tools modules "$(pbpaste)" \r
-\to   pipe . less-git-tools open "$(pbpaste)" \r
-\tt   pipe . less-git-tools difftool "$(pbpaste)" \r
+\td   pipe . less-git-tools diff "$({{PASTE_COMMAND}})" \r
+\tl   pipe . less-git-tools files "$({{PASTE_COMMAND}})" \r
+\tm   pipe . less-git-tools modules "$({{PASTE_COMMAND}})" \r
+\to   pipe . less-git-tools open "$({{PASTE_COMMAND}})" \r
+\tt   pipe . less-git-tools difftool "$({{PASTE_COMMAND}})" \r
 
-\tC   pipe . less-git-tools cherry-pick "$(pbpaste)" \r
-\tP   pipe . less-git-tools format-patch "$(pbpaste)" \r
-\tR   pipe . less-git-tools revert "$(pbpaste)" \r
+\tC   pipe . less-git-tools cherry-pick "$({{PASTE_COMMAND}})" \r
+\tP   pipe . less-git-tools format-patch "$({{PASTE_COMMAND}})" \r
+\tR   pipe . less-git-tools revert "$({{PASTE_COMMAND}})" \r
 
 
 #line-edit
