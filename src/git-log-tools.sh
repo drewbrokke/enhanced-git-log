@@ -24,28 +24,21 @@ function _logAndExecute() {
 	"$@"
 }
 
-# Given two git commit hashes, this function will output in range format, with the
-# ancestor commit coming first. If only one commit is given, then use a
-# "single commit range"
+# Given two git commit hashes, this will set the HASH_RANGE variable in range
+# format, with the ancestor commit coming first. If only one commit is given,
+# then use a "single commit range"
 
-function hashRange() {
-	if [ -z "$2" ]
-	then
-		echo "$1^..$1"
-		exit
-	fi
+HASH_RANGE="${COMMIT}^..${COMMIT}"
 
-	if git merge-base --is-ancestor "$1" "$2"
+if [ "${ALT_COMMIT}" ]
+then
+	if git merge-base --is-ancestor "${COMMIT}" "${ALT_COMMIT}"
 	then
-		echo "$1^..$2"
+		HASH_RANGE="${COMMIT}^..${ALT_COMMIT}"
 	else
-		echo "$2^..$1"
+		HASH_RANGE="${ALT_COMMIT}^..${COMMIT}"
 	fi
-}
-
-function getRange() {
-	hashRange "${COMMIT}" "${ALT_COMMIT}"
-}
+fi
 
 if [ -z "${COMMAND}" ]
 then
@@ -54,19 +47,19 @@ then
 
 elif [ "${COMMAND}" = "cherry-pick" ]
 then
-	_logAndExecute git cherry-pick "$(getRange)" || git cherry-pick --abort && _warn "Cherry-pick aborted"
+	_logAndExecute git cherry-pick "${HASH_RANGE}" || git cherry-pick --abort && _warn "Cherry-pick aborted"
 
 elif [ "${COMMAND}" = "diff" ]
 then
-	_logAndExecute git diff "$(getRange)" --patch --stat-width=1000 --ignore-all-space
+	_logAndExecute git diff "${HASH_RANGE}" --patch --stat-width=1000 --ignore-all-space
 
 elif [ "${COMMAND}" = "difftool" ]
 then
-	_logAndExecute git difftool "$(getRange)"
+	_logAndExecute git difftool "${HASH_RANGE}"
 
 elif [ "${COMMAND}" = "files" ]
 then
-	_logAndExecute git --paginate diff "$(getRange)" --name-only
+	_logAndExecute git --paginate diff "${HASH_RANGE}" --name-only
 
 elif [ "${COMMAND}" = "format-patch" ]
 then
@@ -76,7 +69,7 @@ then
 
 		exit 1
 	fi
-	_logAndExecute git format-patch -o "${GIT_LOG_TOOLS_PTACH_DIR}" "$(getRange)"
+	_logAndExecute git format-patch -o "${GIT_LOG_TOOLS_PTACH_DIR}" "${HASH_RANGE}"
 
 elif [ "${COMMAND}" = "fixup" ]
 then
@@ -84,8 +77,8 @@ then
 
 elif [ "${COMMAND}" = "open" ]
 then
-	_log "Opening files with command: $(git diff "$(getRange)" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")"
-	for file in $(git diff "$(getRange)" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")
+	_log "Opening files with command: $(git diff "${HASH_RANGE}" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")"
+	for file in $(git diff "${HASH_RANGE}" --name-only | head -n "${GIT_LOG_TOOLS_FILE_OPEN_LIMIT:-50}")
 	do
 		open "$file" 2>/dev/null || echo "Could not open file: $file"
 	done
@@ -96,7 +89,7 @@ then
 
 elif [ "${COMMAND}" = "revert" ]
 then
-	_logAndExecute git revert "$(getRange)"
+	_logAndExecute git revert "${HASH_RANGE}"
 
 elif [ "${COMMAND}" = "show" ]
 then
@@ -126,7 +119,7 @@ then
 
 elif [ "${COMMAND}" = "modules" ] && [ -f "$HOME/Documents/sed_commands/show_modules.txt" ]
 then
-	git diff "$(getRange)" --name-only |
+	git diff "${HASH_RANGE}" --name-only |
 	sed -f "$HOME/Documents/sed_commands/show_modules.txt" |
 	sort -u |
 	less
@@ -145,7 +138,7 @@ elif [ "${COMMAND}" = "print" ]
 then
 	echo "COMMIT:		${COMMIT}"
 	echo "ALT_COMMIT:	${ALT_COMMIT}"
-	echo "RANGE:		$(getRange)"
+	echo "RANGE:		${HASH_RANGE}"
 
 else
 	echo "Unknown command: ${COMMAND}" | less
