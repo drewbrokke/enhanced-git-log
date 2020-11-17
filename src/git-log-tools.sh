@@ -120,7 +120,7 @@ then
 ### BEGIN	These depend on my personal scripts
 ###
 
-elif [ "${COMMAND}" = "issue" ] && command -v ji 2>/dev/null
+elif [ "${COMMAND}" = "issue" ] && command -v ji &>/dev/null
 then
 	_logAndExecute ji "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
 
@@ -131,7 +131,7 @@ then
 	sort -u |
 	less
 
-elif [ "${COMMAND}" = "pull-request" ] && command -v getpr 2>/dev/null
+elif [ "${COMMAND}" = "pull-request" ] && command -v getpr &>/dev/null
 then
 	_logAndExecute getpr "$(git show --no-patch --pretty="format:%s" "${COMMIT}")"
 
