@@ -69,7 +69,7 @@ then
 
 		exit 1
 	fi
-	_logAndExecute git format-patch -o "${GIT_LOG_TOOLS_PTACH_DIR}" "${HASH_RANGE}"
+	_logAndExecute git format-patch -o "${GIT_LOG_TOOLS_PATCH_DIR}" "${HASH_RANGE}"
 
 elif [ "${COMMAND}" = "fixup" ]
 then
