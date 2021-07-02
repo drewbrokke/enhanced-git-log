@@ -27,7 +27,7 @@ make uninstall
 
 All key commands act on the commit found at the top line of the `git log` pager, or the first line from the top that contains a commit hash.
 
-`tab-*` commands will receive a second commit to create and act on a commit range. The **contents of the clipboard** will be passed in as the second commit. The two commits are automatically sorted by ancestry, parent first.
+`tab-*` commands will receive a second commit to create and act on a commit range. The **contents of the clipboard** will be passed in as the second commit (you can press `x` or `y` to copy the top line's commit hash to the clipboard). The two commits are automatically sorted by ancestry, parent first.
 
 For example, pressing `d` will execute: `git diff {commit from top line}`
 
