@@ -25,10 +25,10 @@ clean-lesskey:
 
 link-scripts: clean-scripts
 	ln -s $(shell pwd)/src/git-log-tools.sh /usr/local/bin/git-log-tools
-	chmod -h 755 /usr/local/bin/git-log-tools
+	chmod 755 /usr/local/bin/git-log-tools
 
 	ln -s $(shell pwd)/src/less-git-tools.sh /usr/local/bin/less-git-tools
-	chmod -h 755 /usr/local/bin/less-git-tools
+	chmod 755 /usr/local/bin/less-git-tools
 .PHONY: link-scripts
 
 clean-scripts:
