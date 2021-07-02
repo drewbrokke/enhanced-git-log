@@ -1,3 +1,4 @@
+BIN_DIR=/usr/local/bin
 OUTPUT_PATH=$(shell pwd)/build/.less-git-log
 
 ifeq ($(shell uname), Darwin)
@@ -24,16 +25,16 @@ clean-lesskey:
 .PHONY: clean-lesskey
 
 link-scripts: clean-scripts
-	ln -s $(shell pwd)/src/git-log-tools.sh /usr/local/bin/git-log-tools
-	chmod 755 /usr/local/bin/git-log-tools
+	sudo ln -s $(shell pwd)/src/git-log-tools.sh $(BIN_DIR)/git-log-tools
+	sudo chmod 755 $(BIN_DIR)/git-log-tools
 
-	ln -s $(shell pwd)/src/less-git-tools.sh /usr/local/bin/less-git-tools
-	chmod 755 /usr/local/bin/less-git-tools
+	sudo ln -s $(shell pwd)/src/less-git-tools.sh $(BIN_DIR)/less-git-tools
+	sudo chmod 755 $(BIN_DIR)/less-git-tools
 .PHONY: link-scripts
 
 clean-scripts:
-	rm /usr/local/bin/git-log-tools 2>/dev/null || :
-	rm /usr/local/bin/less-git-tools 2>/dev/null || :
+	sudo rm $(BIN_DIR)/git-log-tools 2>/dev/null || :
+	sudo rm $(BIN_DIR)/less-git-tools 2>/dev/null || :
 .PHONY: clean-scripts
 
 clean: clean-scripts clean-lesskey
